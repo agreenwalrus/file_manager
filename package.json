@@ -1,0 +1,12 @@
+{
+  "name": "file_manager",
+  "version": "1.0.0",
+  "description": "File Manager for the RSS course",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "author": "agreenwalrus",
+  "license": "ISC",
+  "type": "module"
+}
