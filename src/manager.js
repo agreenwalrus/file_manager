@@ -13,8 +13,8 @@ export class Manager {
     this.#commandFactory = new CommandFacade();
   }
 
-  start() {
-    this.#setUpEvents();
+  async start() {
+    await this.#setUpEvents();
     console.log(this.startMessage);
     process.stdout.write(this.prompt);
   }
@@ -25,7 +25,9 @@ export class Manager {
         const res = await this.execute(data.toString());
         if (res !== undefined) console.log(res);
       } catch (err) {
-        console.log(`${err.name}: ${err.message}`);
+        console.log("catch");
+        console.log("catch", err);
+        console.log("catch", `${err.name}: ${err.message}`);
       }
       process.stdout.write(this.prompt);
     });
@@ -37,6 +39,13 @@ export class Manager {
     process.on("SIGINT", () => {
       process.stdout.write(EOL);
       this.execute(".exit");
+    });
+
+    process.on("uncaughtException", (err) => {
+      console.log("uncaughtException");
+      console.log("uncaughtException", err);
+      console.log("uncaughtException", `${err.name}: ${err.message}`);
+      process.stdout.write(this.prompt);
     });
   }
 
@@ -66,6 +75,6 @@ export class Manager {
   }
 
   get prompt() {
-    return `🤓 ${this.currDir}>`;
+    return `🤓 ${this.currDir}> `;
   }
 }

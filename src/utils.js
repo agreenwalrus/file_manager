@@ -1,4 +1,4 @@
-import { FileExistsError, FileNotExistsError } from "./errors/errors.js";
+import { FsExistsError, FsNotExistsError } from "./errors/errors.js";
 
 export function parseParameters(argv) {
   return argv.reduce((acc, param) => {
@@ -10,11 +10,11 @@ export function parseParameters(argv) {
   }, {});
 }
 
-export function fsErrorHandler(err) {
+export function fsErrorHandler(err, type="File") {
   if (err.code === "ENOENT") {
-    throw new FileNotExistsError(err.path);
+    throw new FsNotExistsError(err.path, type);
   } else if (err.code === "EEXIST") {
-    throw new FileExistsError(err.path);
+    throw new FsExistsError(err.path, type);
   }
   throw err;
 }

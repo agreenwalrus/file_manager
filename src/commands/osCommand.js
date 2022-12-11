@@ -1,5 +1,5 @@
-import { Command } from "./command";
+import { Command } from "./command.js";
 
-export class UpCommand extends Command {
+export class OsCommand extends Command {
   
 }

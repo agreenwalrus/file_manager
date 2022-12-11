@@ -5,16 +5,16 @@ export class ValidaionError extends Error {
   }
 }
 
-export class FileExistsError extends Error {
-  constructor(path) {
-    super(`File ${path} already exists.`);
+export class FsExistsError extends Error {
+  constructor(path, type = "File") {
+    super(`${type} ${path} already exists.`);
     this.name = this.constructor.name;
   }
 }
 
-export class FileNotExistsError extends Error {
-  constructor(path) {
-    super(`File ${path} does not exist.`);
+export class FsNotExistsError extends Error {
+  constructor(path, type = "File") {
+    super(`${type} ${path} does not exist.`);
     this.name = this.constructor.name;
   }
 }

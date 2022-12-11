@@ -1,5 +1,29 @@
-import { Command } from "./command";
+import { resolve } from "path";
+import { unlink } from "fs/promises";
 
-export class UpCommand extends Command {
-  
+import { Command } from "./command.js";
+import { fsErrorHandler } from "../utils.js";
+
+export class RmCommand extends Command {
+  _path;
+  _MANDATORY_ARGS_COUNT = 1;
+
+  constructor(manager, args) {
+    super(manager, args);
+    this.validateArgs();
+    this._path = this._args[0];
+  }
+
+  async execute() {
+    try {
+      const pathFile = resolve(this._manager.currDir, this._path);
+      return await unlink(pathFile);
+    } catch (err) {
+      fsErrorHandler(err);
+    }
+  }
+
+  help() {
+    return "rm <file_nm>";
+  }
 }

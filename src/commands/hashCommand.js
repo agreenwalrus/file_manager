@@ -6,22 +6,19 @@ import { fsErrorHandler } from "../utils.js";
 import { Command } from "./command.js";
 
 export class HashCommand extends Command {
-  #path;
+  _path;
   _MANDATORY_ARGS_COUNT = 1;
 
   constructor(manager, args) {
     super(manager, args);
     this.validateArgs();
+    this._path = this._args[0];
   }
-
-  validateArgs() {
-    super.validateArgs();
-    this.#path = this._args[0];
-  }
+  
 
   async execute() {
     try {
-      const pathFile = resolve(this._manager.currDir, this.#path);
+      const pathFile = resolve(this._manager.currDir, this._path);
       const data = await readFile(pathFile, { encoding: "utf8" });
       return createHash("sha256").update(data).digest("hex");
     } catch (err) {
