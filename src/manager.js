@@ -1,6 +1,7 @@
 import { EOL } from "os";
 
 import { CommandFacade } from "./commandFacade.js";
+import { fsErrorHandler } from "./utils.js";
 
 export class Manager {
   #userName;
@@ -25,6 +26,7 @@ export class Manager {
         const res = await this.execute(data.toString());
         if (res !== undefined) console.log(res);
       } catch (err) {
+        fsErrorHandler(err);
         console.log("catch");
         console.log("catch", err);
         console.log("catch", `${err.name}: ${err.message}`);

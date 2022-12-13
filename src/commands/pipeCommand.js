@@ -4,23 +4,25 @@ import { createReadStream, createWriteStream } from "fs";
 import { Command } from "./command.js";
 import { fsErrorHandler } from "../utils.js";
 import { FsExistsError, FsNotExistsError } from "../errors/errors.js";
-import { createBrotliCompress, createBrotliDecompress } from "zlib";
 import { RmCommand } from "./rmCommand.js";
+import { PassThrough } from "stream";
 
-export class CompressCommand extends Command {
+export class PipeCommand extends Command {
   _pathSourse;
   _pathDestination;
   _MANDATORY_ARGS_COUNT = 2;
-  #comress;
+  _compress;
+  _removeSource;
 
-  constructor(manager, args, compress) {
+  constructor(manager, args, removeSourse = false, transformStream = new PassThrough()) {
     super(manager, args);
-    this.#comress = compress;
+    this._transformStream = transformStream;
+    this._removeSource = removeSourse;
     this.validateArgs();
     this._pathSourse = resolve(this._manager.currDir, this._args[0]);
     this._pathDestination = resolve(this._manager.currDir, this._args[1]);
   }
-
+  
   async execute() {
     return new Promise(async (res, rej) => {
       try {
@@ -29,12 +31,11 @@ export class CompressCommand extends Command {
 
         const readStream = createReadStream(this._pathSourse);
         const writeStream = createWriteStream(this._pathDestination);
-        const compressStream = this.#comress === 1 ? createBrotliCompress() : createBrotliDecompress();
 
-        readStream.pipe(compressStream).pipe(writeStream);
+        readStream.pipe(this._transformStream).pipe(writeStream);
 
         readStream.on("end", async () => {
-          await new RmCommand(this._manager, [this._pathSourse]).execute();
+          if (this._removeSource) await new RmCommand(this._manager, [this._pathSourse]).execute();
           res();
         });
 
@@ -52,6 +53,6 @@ export class CompressCommand extends Command {
   }
 
   help() {
-    return `${this.#comress === 1 ? "compress" : "decompress"} <path_to_sourse> <path_to_destination>`;
+    return `${this._compress === 1 ? "compress" : "decompress"} <path_to_sourse> <path_to_destination>`;
   }
 }

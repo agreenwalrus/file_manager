@@ -1,6 +1,6 @@
 export class ValidaionError extends Error {
   constructor(syntax) {
-    super(`Wrong amount of parameters. Command syntax is "${syntax}"`);
+    super(`Wrong parameters. Command syntax is "${syntax}"`);
     this.name = this.constructor.name;
   }
 }

@@ -2,11 +2,15 @@ import { EOL } from "os";
 import { AddCommand } from "./commands/addCommand.js";
 import { CatCommand } from "./commands/catCommand.js";
 import { CdCommand } from "./commands/cdCommad.js";
-import { CompressCommand } from "./commands/compressCommand.js";
+import { CompressBrotliCommand } from "./commands/compressBrotliCommand.js";
+import { CpCommand } from "./commands/cpCommand.js";
 
 import { ExitCommand } from "./commands/exitCommand.js";
 import { HashCommand } from "./commands/hashCommand.js";
+import { LsCommand } from "./commands/lsCommand.js";
+import { OsCommand } from "./commands/osCommand.js";
 import { RmCommand } from "./commands/rmCommand.js";
+import { RnCommand } from "./commands/rnCommand.js";
 import { UpCommand } from "./commands/upCommand.js";
 import { NoSuchCommandError } from "./errors/errors.js";
 
@@ -34,11 +38,21 @@ export class CommandFacade {
       case "cd":
         return this.#getCdCommand(manager, args);
       case "compress":
-        return this.#getCompressCommand(manager, args);
+        return this.#getCompressBrotliCommand(manager, args);
       case "decompress":
-        return this.#getDecompressCommand(manager, args);
+        return this.#getDecompressBrotliCommand(manager, args);
       case "rm":
         return this.#getRmCommand(manager, args);
+      case "cp":
+        return this.#getCpCommand(manager, args);
+      case "mv":
+        return this.#getMvCommand(manager, args);
+      case "os":
+        return this.#getOsCommand(manager, args);
+      case "ls":
+        return this.#getLsCommand(manager);
+      case "rn":
+        return this.#getRnCommand(manager, args);
       default:
         throw new NoSuchCommandError(command);
     }
@@ -70,15 +84,35 @@ export class CommandFacade {
     return new CdCommand(manager, args);
   }
 
-  #getCompressCommand(manager, args) {
-    return new CompressCommand(manager, args, 1);
+  #getCompressBrotliCommand(manager, args) {
+    return new CompressBrotliCommand(manager, args, 1, true);
   }
 
-  #getDecompressCommand(manager, args) {
-    return new CompressCommand(manager, args, 0);
+  #getDecompressBrotliCommand(manager, args) {
+    return new CompressBrotliCommand(manager, args, -1, true);
   }
 
   #getRmCommand(manager, args) {
     return new RmCommand(manager, args);
+  }
+
+  #getCpCommand(manager, args) {
+    return new CpCommand(manager, args);
+  }
+
+  #getMvCommand(manager, args) {
+    return new CpCommand(manager, args, true);
+  }
+
+  #getOsCommand(manager, args) {
+    return new OsCommand(manager, args);
+  }
+
+  #getLsCommand(manager) {
+    return new LsCommand(manager);
+  }
+
+  #getRnCommand(manager, args) {
+    return new RnCommand(manager, args);
   }
 }
