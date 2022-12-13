@@ -1,5 +1,4 @@
 import { resolve } from "path";
-import fs from "fs/promises";
 
 import { Command } from "./command.js";
 import { FsNotExistsError } from "../errors/errors.js";

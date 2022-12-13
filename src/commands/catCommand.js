@@ -18,7 +18,6 @@ export class CatCommand extends Command {
   }
 
   async execute() {
-    // console.log("readStream1", readStream);
     return new Promise(async (res, rej) => {
       try {
         if (!(await Command.isFile(this._path))) throw new FsNotExistsError(this._path);

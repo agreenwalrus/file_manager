@@ -20,9 +20,7 @@ export class CommandFacade {
       .replace(EOL, "")
       .split(" ")
       .filter((p) => p !== "");
-    console.log("getCommand", other);
     const args = other ?? [];
-    console.log("getCommand", other, args);
 
     switch (command) {
       case "add":
@@ -56,8 +54,6 @@ export class CommandFacade {
       default:
         throw new NoSuchCommandError(command);
     }
-
-    //throw new Error("Method is not defined");
   }
 
   #getUpCommand(manager) {

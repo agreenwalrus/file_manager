@@ -1,4 +1,3 @@
-import { cp } from "fs/promises";
 import os from "os";
 import { ValidaionError } from "../errors/errors.js";
 import { Command } from "./command.js";

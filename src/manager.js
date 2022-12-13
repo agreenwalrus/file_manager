@@ -27,9 +27,6 @@ export class Manager {
         if (res !== undefined) console.log(res);
       } catch (err) {
         fsErrorHandler(err);
-        console.log("catch");
-        console.log("catch", err);
-        console.log("catch", `${err.name}: ${err.message}`);
       }
       process.stdout.write(this.prompt);
     });
@@ -44,9 +41,7 @@ export class Manager {
     });
 
     process.on("uncaughtException", (err) => {
-      console.log("uncaughtException");
-      console.log("uncaughtException", err);
-      console.log("uncaughtException", `${err.name}: ${err.message}`);
+      console.log(`${err.name}: ${err.message}`);
       process.stdout.write(this.prompt);
     });
   }

@@ -12,7 +12,6 @@ export class Command {
   }
 
   validateArgs() {
-    console.log("validateArgs", this._MANDATORY_ARGS_COUNT, this._args);
     if (this._args.length < this._MANDATORY_ARGS_COUNT) throw new ValidaionError(this.help());
   }
 

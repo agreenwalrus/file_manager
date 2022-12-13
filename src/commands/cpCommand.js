@@ -28,8 +28,6 @@ export class CpCommand extends Command {
   }
 
   async #copyDirectoryDeep(srcPath, destPath) {
-    console.log(srcPath, destPath);
-    console.log("1");
     let files;
     if (await Command.isFile(srcPath)) {
       files = [{ name: basename(srcPath), isDirectory: () => false }];
@@ -41,16 +39,13 @@ export class CpCommand extends Command {
     await fs.mkdir(destPath).catch((err) => {
       if (err.code !== "EEXIST") throw err;
     });
-    console.log("2");
-
+    
     return Promise.all(
       files.map(async (file) => {
-        console.log("3");
         const srcFilePath = resolve(srcPath, file.name);
         const destFilePath = resolve(destPath, file.name);
 
-        console.log(file.name, srcFilePath, destFilePath);
-
+        
         if (file.isDirectory()) {
           await this.#copyDirectoryDeep(srcFilePath, destFilePath);
         } else {
@@ -61,6 +56,6 @@ export class CpCommand extends Command {
   }
 
   help() {
-    return `cp <path_to_sourse_folder> <path_to_destination_folder>`;
+    return `cp <path_to_sourse> <path_to_destination_folder>`;
   }
 }
