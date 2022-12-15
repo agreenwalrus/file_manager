@@ -17,7 +17,7 @@ export class RmCommand extends Command {
   async execute() {
     try {
       const pathFile = resolve(this._manager.currDir, this._path);
-      return await unlink(pathFile);
+      return unlink(pathFile);
     } catch (err) {
       fsErrorHandler(err);
     }

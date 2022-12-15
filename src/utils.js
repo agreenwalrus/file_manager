@@ -11,12 +11,14 @@ export function parseParameters(argv) {
 }
 
 export function fsErrorHandler(err, type = "File") {
-  if (err.code === "ENOENT") {
-    throw new FsNotExistsError(err.path, "File or Directory");
-  } else if (err.code === "EEXIST") {
-    throw new FsExistsError(err.path, "File or Directory");
-  } else if (err.code === "ENOTDIR") {
-    throw new FsNotExistsError(err.path, "Directory");
+  switch (err.code) {
+    case "ENOENT":
+      throw new FsNotExistsError(err.path, "File or Directory");
+    case "EEXIST":
+      throw new FsExistsError(err.path, "File or Directory");
+    case "ENOTDIR":
+      throw new FsNotExistsError(err.path, "Directory");
+    default:
+      throw err;
   }
-  throw err;
 }

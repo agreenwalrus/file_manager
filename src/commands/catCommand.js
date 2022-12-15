@@ -1,5 +1,6 @@
 import { resolve } from "path";
 import { createReadStream } from "fs";
+import os from "os";
 
 import { Command } from "./command.js";
 import { fsErrorHandler } from "../utils.js";
@@ -24,6 +25,7 @@ export class CatCommand extends Command {
         const readStream = createReadStream(this._path);
         readStream.pipe(this._writeStream);
         readStream.on("end", () => {
+          this._writeStream.write(os.EOL);
           res();
         });
         readStream.on("error", (err) => {

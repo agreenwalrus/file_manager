@@ -17,7 +17,7 @@ export class AddCommand extends Command {
   async execute() {
     try {
       const pathFile = resolve(this._manager.currDir, this._path);
-      return await writeFile(pathFile, "", { flag: "wx" });
+      return writeFile(pathFile, "", { flag: "wx" });
     } catch (err) {
       fsErrorHandler(err);
     }

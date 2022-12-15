@@ -41,7 +41,7 @@ export class Manager {
     });
 
     process.on("uncaughtException", (err) => {
-      console.log(`${err.name}: ${err.message}`);
+      console.log(`Operation failed: ${err.message}`);
       process.stdout.write(this.prompt);
     });
   }
@@ -72,6 +72,6 @@ export class Manager {
   }
 
   get prompt() {
-    return `🤓 ${this.currDir}> `;
+    return `👻 You are currently in ${this.currDir}> `;
   }
 }
