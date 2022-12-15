@@ -1,4 +1,5 @@
 import { EOL } from "os";
+import readline from "readline/promises";
 
 import { CommandFacade } from "./commandFacade.js";
 import { fsErrorHandler } from "./utils.js";
@@ -7,42 +8,46 @@ export class Manager {
   #userName;
   #currDir;
   #commandFactory;
+  #readLine;
 
   constructor(userName, currDir) {
     this.#currDir = currDir;
     this.#userName = userName;
     this.#commandFactory = new CommandFacade();
+    this.#readLine = readline.createInterface({ input: process.stdin, output: process.stdout });
+    this.#readLine.setPrompt(this.prompt);
   }
 
   async start() {
     await this.#setUpEvents();
     console.log(this.startMessage);
-    process.stdout.write(this.prompt);
+    this.#readLine.prompt();
   }
 
   async #setUpEvents() {
-    process.stdin.on("data", async (data) => {
+    this.#readLine.on("line", async (data) => {
       try {
         const res = await this.execute(data.toString());
         if (res !== undefined) console.log(res);
       } catch (err) {
         fsErrorHandler(err);
       }
-      process.stdout.write(this.prompt);
+      this.#readLine.prompt();
     });
 
     process.on("exit", (code) => {
+      this.#readLine.close();
+      process.stdout.write(EOL);
       console.log(this.endMessage);
     });
 
     process.on("SIGINT", () => {
-      process.stdout.write(EOL);
       this.execute(".exit");
     });
 
     process.on("uncaughtException", (err) => {
       console.log(`Operation failed: ${err.message}`);
-      process.stdout.write(this.prompt);
+      this.#readLine.prompt();
     });
   }
 
@@ -56,6 +61,7 @@ export class Manager {
 
   set currDir(newDir) {
     this.#currDir = newDir;
+    this.#readLine.setPrompt(this.prompt);
   }
 
   execute(input) {
