@@ -24,6 +24,6 @@ export class CdCommand extends Command {
   }
 
   help() {
-    return "cd <folder_name>";
+    return "cd <path_to_directory>";
   }
 }

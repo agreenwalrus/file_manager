@@ -51,8 +51,4 @@ export class PipeCommand extends Command {
       }
     });
   }
-
-  help() {
-    return `${this._compress === 1 ? "compress" : "decompress"} <path_to_sourse> <path_to_destination>`;
-  }
 }

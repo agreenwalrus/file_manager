@@ -27,6 +27,6 @@ export class RnCommand extends Command {
   }
 
   help() {
-    return "rn <old_file> <new_file>";
+    return "rn <path_to_file> <new_filename>";
   }
 }

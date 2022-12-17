@@ -24,6 +24,6 @@ export class AddCommand extends Command {
   }
 
   help() {
-    return "add <file_nm>";
+    return "add <new_file_name>";
   }
 }

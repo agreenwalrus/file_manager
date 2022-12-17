@@ -56,6 +56,6 @@ export class CpCommand extends Command {
   }
 
   help() {
-    return `cp <path_to_sourse> <path_to_destination_folder>`;
+    return `${this.#removeSrc === 1 ? 'mv' : 'rn'} <path_to_file> <path_to_new_directory>`;
   }
 }

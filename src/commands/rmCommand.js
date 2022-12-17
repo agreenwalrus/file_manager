@@ -24,6 +24,6 @@ export class RmCommand extends Command {
   }
 
   help() {
-    return "rm <file_nm>";
+    return "rm <path_to_file>";
   }
 }

@@ -41,6 +41,6 @@ export class CatCommand extends Command {
   }
 
   help() {
-    return "cat <file_nm>";
+    return "cat <path_to_file>";
   }
 }
